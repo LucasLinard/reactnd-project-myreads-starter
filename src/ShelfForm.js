@@ -3,15 +3,14 @@ import React, { Component } from 'react';
 class ShelfForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {value: 'none'};
+        this.state = {value: this.props.book.shelf};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange(event) {
         this.setState({value: event.target.value});
-        console.log('The selected shelf is: ' + this.state.value);
-        console.log('The selected shelf is: ' + event.target.value);
+        this.props.onUpdateShelf(this.props.book, event.target.value)
     }
 
     handleSubmit(event) {
@@ -31,8 +30,5 @@ class ShelfForm extends React.Component {
             </select>
         )
     }
-
-
-
 }
 export default ShelfForm;

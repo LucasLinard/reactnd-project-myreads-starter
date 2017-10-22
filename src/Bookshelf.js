@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import ShelfForm from "./ShelfForm";
 
 class Bookshelf extends Component {
+
     render() {
         const { books, shelf, onUpdateShelf, title } = this.props
+
         let showingBooks;
-        showingBooks = books.filter((book) => (book.shelf === shelf))
+        showingBooks = books.filter((book) => (book.shelf === shelf || book.shelf == undefined))
         return (
             <div className="bookshelf">
                 <h2 className="bookshelf-title">{title}</h2>

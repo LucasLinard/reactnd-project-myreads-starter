@@ -3,6 +3,7 @@ import * as BooksAPI from './BooksAPI'
 import { Link, Route } from 'react-router-dom'
 import './App.css'
 import Bookshelf from "./Bookshelf";
+import SearchBar from "./SearchBar";
 
 class BooksApp extends React.Component {
 state = {
@@ -10,32 +11,31 @@ state = {
 }
 
 componentDidMount() {
-BooksAPI.getAll().then((books) => {
-    this.setState({ books })
+    BooksAPI.getAll().then((books) => {
+        this.setState({ books })
 })
 }
 moveBook = (book, shelf) => {
-    console.log(book, shelf)
     BooksAPI.update(book, shelf)
+    this.setState((state) => ({
+        books: state.books.filter((b) => b.id !== book.id)
+    }))
+    book.shelf = shelf;
+    this.setState((state) => ({
+        books: state.books.concat( [ book ])
+    }))
 }
+
 render() {
 return (
     <div className="app">
         <Route exact path='/search' render={() => (
             <div className="search-books">
-                <div className="search-books-bar">
-                    <Link className="close-search" to={"/"}>Close</Link>
-                        <div className="search-books-input-wrapper">
-                            <input type="text" placeholder="Search by title or author"/>
-                        </div>
-                    </div>
-                    <div className="search-books-results">
-                        <Bookshelf
-                            onUpdateShelf={this.moveBook}
-                            title={"Search"}
-                            books={this.state.books}
-                      />
-                </div>
+                <SearchBar
+                    shelf={"none"}
+                    onUpdateShelf={this.moveBook}
+                    books={this.state.books}
+                />
             </div>
         )}/>
         <Route exact path={'/'} render={() => (
