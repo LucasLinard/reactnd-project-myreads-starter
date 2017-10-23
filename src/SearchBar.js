@@ -16,11 +16,7 @@ class SearchBar extends Component {
 
     searchBook = (query) => {
         BooksAPI.search(query, 5).then((books) => {
-            books.map((book) => (
-                this.setState(state => ({
-                    books: state.contacts.concat([ book ])
-                }))
-            ))
+            this.setState({ books })
         })
     }
 
