@@ -44,19 +44,19 @@ return (
                      onUpdateShelf={this.moveBook}
                      shelf={"currentlyReading"}
                      title={"Currently Reading"}
-                     books={this.state.books}
+                     books={this.state.books.filter((book) => (book.shelf === "currentlyReading") )}
                 />
                 <Bookshelf
                     onUpdateShelf={this.moveBook}
                     shelf={"wantToRead"}
                     title={"Want to Read"}
-                    books={this.state.books}
+                    books={this.state.books.filter((book) => (book.shelf === "wantToRead") )}
                 />
                 <Bookshelf
                     onUpdateShelf={this.moveBook}
                     shelf={"read"}
                     title={"Read"}
-                    books={this.state.books}
+                    books={this.state.books.filter((book) => (book.shelf === "read") )}
                 />
                 <div className="open-search">
                     <Link to='/search'>Add a book</Link>

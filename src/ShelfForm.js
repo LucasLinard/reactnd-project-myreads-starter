@@ -3,18 +3,13 @@ import React, { Component } from 'react';
 class ShelfForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {value: this.props.book.shelf};
+        this.state = {value: this.props.book.shelf ? this.props.book.shelf : "none"};
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange(event) {
         this.setState({value: event.target.value});
         this.props.onUpdateShelf(this.props.book, event.target.value)
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
     }
 
     render () {

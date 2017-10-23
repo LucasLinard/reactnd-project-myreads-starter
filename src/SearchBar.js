@@ -5,7 +5,7 @@ import * as BooksAPI from './BooksAPI'
 
 class SearchBar extends Component {
     state = {
-        books: [],
+        books: this.props.books,
         query: ''
     }
 
@@ -16,19 +16,32 @@ class SearchBar extends Component {
 
     searchBook = (query) => {
         BooksAPI.search(query, 5).then((books) => {
-            this.setState({ books })
+            books.map((book) => (
+                this.setState(state => ({
+                    books: state.contacts.concat([ book ])
+                }))
+            ))
         })
     }
+
     updateQuery = (query) => {
         this.setState({ query: query.trim() })
+        if (query) {
+            this.searchBook(query)
+        }
     }
 
     render() {
         const { books, shelf, onUpdateShelf } = this.props
         const { query } = this.state
+
+        let showingBooks
         if (query) {
-            this.searchBook(query)
+            showingBooks = this.state.books
+        } else {
+            showingBooks = [];
         }
+
         return (
 
             <div>
@@ -47,7 +60,7 @@ class SearchBar extends Component {
                         onUpdateShelf={onUpdateShelf}
                         shelf={shelf}
                         title={"Search Results"}
-                        books={this.state.books}
+                        books={showingBooks}
                     />
                 </div>
             </div>
