@@ -34,7 +34,7 @@ return (
                 <SearchBar
                     shelf={"none"}
                     onUpdateShelf={this.moveBook}
-                    books={this.state.books}
+                    myBooks={this.state.books}
                 />
             </div>
         )}/>

@@ -5,7 +5,7 @@ import * as BooksAPI from './BooksAPI'
 
 class SearchBar extends Component {
     state = {
-        books: this.props.books,
+        books: [],
         query: ''
     }
 
@@ -15,28 +15,45 @@ class SearchBar extends Component {
     }
 
     searchBook = (query) => {
-        BooksAPI.search(query, 5).then((books) => {
-            this.setState({ books })
-        })
+        BooksAPI.search(query, 5).then(
+            response => {
+                if (response.error) {
+                    this.setState({ books:[] });
+                } else {
+                    this.updateBooks(response)
+                }
+            }
+        );
+    }
+
+    updateBooks(books) {
+        const myBooks = this.props.myBooks;
+        const resultBooks = books.map(book => {
+            book.shelf = this.props.shelf;
+            myBooks.forEach(myBook => {
+                if (book.id === myBook.id) {
+                    book.shelf = myBook.shelf
+                }
+            });
+            return book;
+        });
+
+        this.setState({
+            books: resultBooks
+        });
     }
 
     updateQuery = (query) => {
-        this.setState({ query: query.trim() })
         if (query) {
-            this.searchBook(query)
+            this.setState({ query: query }, this.searchBook(query))
+        } else {
+            this.setState({ query: query })
         }
     }
 
     render() {
-        const { books, shelf, onUpdateShelf } = this.props
+        const { shelf, onUpdateShelf } = this.props
         const { query } = this.state
-
-        let showingBooks
-        if (query) {
-            showingBooks = this.state.books
-        } else {
-            showingBooks = [];
-        }
 
         return (
 
@@ -56,7 +73,7 @@ class SearchBar extends Component {
                         onUpdateShelf={onUpdateShelf}
                         shelf={shelf}
                         title={"Search Results"}
-                        books={showingBooks}
+                        books={this.state.books}
                     />
                 </div>
             </div>
