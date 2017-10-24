@@ -24,7 +24,7 @@ class Bookshelf extends Component {
                                             />
                                         </div>
                                     </div>
-                                    <div onClick={() => onUpdateShelf(book, 'wantToRead')} className="book-title">{book.title}</div>
+                                    <div className="book-title">{book.title}</div>
                                     <div className="book-authors">{book.authors.map((author) => (
                                         <ul key={`${author} ${author.position} `}>
                                             <li key={author} style={{listStyleType: `none`}}>{author}</li>

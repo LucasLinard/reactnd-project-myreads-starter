@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import Bookshelf from "./Bookshelf";
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI';
+import { Debounce } from 'react-throttle';
 
 class SearchBar extends Component {
     state = {
@@ -11,7 +12,6 @@ class SearchBar extends Component {
 
     componentDidMount() {
         this.searchBook(this.state.query);
-
     }
 
     searchBook = (query) => {
@@ -61,11 +61,12 @@ class SearchBar extends Component {
                 <div className="search-books-bar">
                     <Link className="close-search" to={"/"}>Close</Link>
                     <div className="search-books-input-wrapper">
-                        <input
-                            value={query}
-                            type="text"
-                            onChange={(event) => this.updateQuery(event.target.value)}
-                            placeholder="Search by title or author"/>
+                        <Debounce time="400" handler="onChange">
+                            <input
+                                type="text"
+                                onChange={(event) => this.updateQuery(event.target.value)}
+                                placeholder="Search by title or author"/>
+                        </Debounce>
                     </div>
                 </div>
                 <div className="search-books-results">
